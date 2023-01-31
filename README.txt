@@ -1,3 +1,3 @@
-A 9x9 Sudoku Solver.
+A 9x9 Sudoku Solver; a short study on constraint propagation. 
 
-Inspiration: https://norvig.com/sudoku.html
+Based on an implementation done by Prof. Norvig here: https://norvig.com/sudoku.html
