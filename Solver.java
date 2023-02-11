@@ -7,8 +7,7 @@ import java.util.Arrays;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-public class Solver
-{
+public class Solver {
     private static final int SIZE = 81;
     private TreeSet<Integer> allNums = new TreeSet<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
 
@@ -28,8 +27,7 @@ public class Solver
      * @param sudoku An unsolved sudoku
      * @return solve time, -1 if solving fails
      */
-    public long solvePuzzle(String sudoku)
-    {
+    public long solvePuzzle(String sudoku) {
         if (unitList == null && units == null && peers == null) buildGrid();
 
         // Measure the time it takes to solve sudoku
@@ -60,8 +58,7 @@ public class Solver
      * @throws FileNotFoundException specified file is not found
      * @throws NullPointerException file pathname is empty
      */
-    public void solveFromFile(String pathToFile) throws NullPointerException, FileNotFoundException
-    {
+    public void solveFromFile(String pathToFile) throws NullPointerException, FileNotFoundException {
         Scanner sc = new Scanner(new File(pathToFile));
         while (sc.hasNextLine()) {
             solvePuzzle(sc.nextLine());
@@ -78,8 +75,7 @@ public class Solver
      * @param pathToFile Path to file with Sudokus
      * @param iterations Number of solving iterations per sudoku
      */
-    public void solveFromFileAverage(String pathToFile, int iterations)
-    {
+    public void solveFromFileAverage(String pathToFile, int iterations) {
         try {
             Scanner sc = new Scanner(new File(pathToFile));
             long solveTime = 0;
@@ -107,8 +103,7 @@ public class Solver
     /*
      * Builds a full list of units and peers necessary to solve the sudoku
      */
-    private void buildGrid()
-    {
+    private void buildGrid() {
         unitList = new ArrayList<>();
         units = new HashMap<>();
         peers = new HashMap<>();
@@ -122,8 +117,7 @@ public class Solver
     }
 
     /* Builds a list of all unit sets in a sudoku grid */
-    private void buildUnitList()
-    {
+    private void buildUnitList() {
         // Row units
         int squareIndex = 0, startingIndex = 0;
         TreeSet<Integer> unitSet;
@@ -168,8 +162,7 @@ public class Solver
     }
 
     /* Builds a list of unit sets for each square. */
-    private void buildUnits() 
-    {
+    private void buildUnits() {
         ArrayList<TreeSet<Integer>> unitArray;
         for (int sq = 0; sq < SIZE; sq++) {
             unitArray = new ArrayList<>();
@@ -182,8 +175,7 @@ public class Solver
     }
 
     /* Builds a set of peers for each square. */
-    private void buildPeers() 
-    {
+    private void buildPeers() {
         TreeSet<Integer> peerSet;
         for (int sq : Solver.units.keySet()) {
             peerSet = new TreeSet<>();
@@ -204,8 +196,7 @@ public class Solver
      * The initial unsolved Sudoku grid is supplied in the form of a String
      * and parsed into a HashMap<Integer, TreeSet<Integer>>. 
      */
-    private HashMap<Integer, TreeSet<Integer>> parseGrid(String grid)
-    {   
+    private HashMap<Integer, TreeSet<Integer>> parseGrid(String grid) {   
         if (grid.length() < SIZE) {
             System.out.println("Parse Error: Sudoku must be longer than 81");
             return null; // invalid sudoku - all grids must be 81 or over in length
@@ -232,8 +223,7 @@ public class Solver
      * Assigns a value to a specified square.
      * (Defined as "eliminate values other than 'value' from square")
      */
-    private HashMap<Integer, TreeSet<Integer>> assignValue(HashMap<Integer, TreeSet<Integer>> grid, int square, int value)
-    {
+    private HashMap<Integer, TreeSet<Integer>> assignValue(HashMap<Integer, TreeSet<Integer>> grid, int square, int value) {
         TreeSet<Integer> otherValues = new TreeSet<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
         otherValues.remove(value);
 
@@ -257,8 +247,7 @@ public class Solver
      * 1. If a square has only one possible number remaining, remove that number from its peers
      * 2. If a unit has only one possible place for a value, put it there
      */
-    private HashMap<Integer, TreeSet<Integer>> eliminateValue(HashMap<Integer, TreeSet<Integer>> grid, int square, int value) 
-    {
+    private HashMap<Integer, TreeSet<Integer>> eliminateValue(HashMap<Integer, TreeSet<Integer>> grid, int square, int value) {
         // If value isn't present in square, it has already been removed
         if (!grid.get(square).contains(value)) {
             return grid; // Return early
@@ -304,16 +293,14 @@ public class Solver
      * Uses depth-first search and constraint propagation to
      * try all possible values in a sudoku grid.
      */
-    private HashMap<Integer, TreeSet<Integer>> solution(HashMap<Integer, TreeSet<Integer>> grid) 
-    {
+    private HashMap<Integer, TreeSet<Integer>> solution(HashMap<Integer, TreeSet<Integer>> grid) {
         return solutionRecursive(grid);
     }
 
     /*
      * Recursive helper function that searches for a solution in a sudoku grid.
      */
-    private HashMap<Integer, TreeSet<Integer>> solutionRecursive(HashMap<Integer, TreeSet<Integer>> grid) 
-    {
+    private HashMap<Integer, TreeSet<Integer>> solutionRecursive(HashMap<Integer, TreeSet<Integer>> grid) {
         // Failed earlier to find solution
         if (grid == null) return null; 
 
@@ -376,14 +363,12 @@ public class Solver
 
     
     /* Checks whether all items in ArrayList are all true */
-    private boolean allTrue(ArrayList<Boolean> a) 
-    {
+    private boolean allTrue(ArrayList<Boolean> a) {
         return (!a.contains(false));
     }
 
     /* Checks whether there is square with no possibilities left in the grid */
-    private boolean emptySquareExists(HashMap<Integer, TreeSet<Integer>> hm) 
-    {
+    private boolean emptySquareExists(HashMap<Integer, TreeSet<Integer>> hm) {
         for (int i : hm.keySet()) {
             // System.out.println(i);
             if (hm.get(i).size() == 0) {
@@ -413,8 +398,7 @@ public class Solver
        </pre>
      *
      */
-    public void displayGrid() 
-    {
+    public void displayGrid() {
         for (int i : markupGrid.keySet()) {
             // Print borders if necessary
             if (i % 3 == 0 && i != 0 && i % 9 != 0)
@@ -461,8 +445,7 @@ public class Solver
      * with empty squares represented by periods (.).
      *
      */
-    public void displayInitialGrid() 
-    {
+    public void displayInitialGrid() {
         int i = 0;
         for (char c : initialGrid.toCharArray()) {
             if (i >= SIZE) break;
@@ -485,8 +468,7 @@ public class Solver
         System.out.println('\n');
     }
 
-    private static final class DeepCopy 
-    {
+    private static final class DeepCopy {
         /* Returns a duplicate of HashMap<Integer, TreeSet<Integer>> type objects */
         private static HashMap<Integer, TreeSet<Integer>> copy(HashMap<Integer, TreeSet<Integer>> hm)
         {
@@ -501,8 +483,7 @@ public class Solver
 
 
     /* Main function for testing */
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
 //        Solver s = new Solver();
 //        String sudoku;
 
